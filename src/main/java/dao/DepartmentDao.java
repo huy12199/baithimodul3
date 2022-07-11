@@ -45,7 +45,7 @@ public class DepartmentDao implements CRUD<Department> {
 
     @Override
     public Department findById(int id) {
-        String sql = "select * from phongban where idphongban = ?";
+        String sql = "select * from phongban where idpb = ?";
         try (Connection connection = Connect_MySQL.getConnect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);

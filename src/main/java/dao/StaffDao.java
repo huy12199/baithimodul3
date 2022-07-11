@@ -22,16 +22,16 @@ public class StaffDao implements CRUD<Staff> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                Date date = resultSet.getDate("birth");
+                int id = resultSet.getInt("idnv");
+                String name = resultSet.getString("tennv");
+                Date date = resultSet.getDate("ngaysinh");
                 LocalDate birth = ((java.sql.Date) date).toLocalDate();
-                String address = resultSet.getString("address");
-                String phoneNumber = resultSet.getString("phone");
-                String email = resultSet.getString("mail");
-                Department department = departmentDao.findById(resultSet.getInt("phongban"));
+                String address = resultSet.getString("diachi");
+                String phoneNumber = resultSet.getString("sdt");
+                String email = resultSet.getString("email");
+                Department department = departmentDao.findById(resultSet.getInt("idpb"));
 
-                staffList.add(new Staff(id, name, birth, address,  phoneNumber,email, department));
+                staffList.add(new Staff(id, name, birth, address, phoneNumber,email, department));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -61,8 +61,8 @@ public class StaffDao implements CRUD<Staff> {
 
     @Override
     public boolean edit(int id, Staff staff) {
-        String sql = "UPDATE nhanvien SET name = ?,birth = ?, " +
-                "address = ?,phone = ?,mail = ?, phongban=? WHERE (id = ?)";
+        String sql = "UPDATE nhanvien SET tennv = ?,ngaysinh = ?, " +
+                "diachi = ?,sdt = ?,email = ?, idpb =? WHERE (idnv = ?)";
         try (Connection connection = Connect_MySQL.getConnect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(7, staff.getId());
@@ -82,7 +82,7 @@ public class StaffDao implements CRUD<Staff> {
 
     @Override
     public boolean delete(int id) {
-        String sql = "delete from nhanvien WHERE id = ?";
+        String sql = "delete from nhanvien WHERE idnv = ?";
         try (Connection connection = Connect_MySQL.getConnect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -96,22 +96,22 @@ public class StaffDao implements CRUD<Staff> {
 
     @Override
     public Staff findById(int id) {
-        String sql = "select * from nhanvien where id = " + id;
+        String sql = "select * from nhanvien where idnv = " + id;
         try (Connection connection = Connect_MySQL.getConnect()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
 
             resultSet.next();
-            int idStaff = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            Date date = resultSet.getDate("birth");
+            int idz = resultSet.getInt("idnv");
+            String name = resultSet.getString("tennv");
+            Date date = resultSet.getDate("ngaysinh");
             LocalDate birth = ((java.sql.Date) date).toLocalDate();
-            String address = resultSet.getString("address");
-            String phoneNumber = resultSet.getString("phone");
-            String email = resultSet.getString("mail");
-            Department department = departmentDao.findById(resultSet.getInt("phongban"));
+            String address = resultSet.getString("diachi");
+            String phoneNumber = resultSet.getString("sdt");
+            String email = resultSet.getString("email");
+            Department department = departmentDao.findById(resultSet.getInt("idpb"));
 
-            return new Staff(idStaff, name, birth, address, phoneNumber, email, department);
+            return new Staff(idz, name, birth, address, phoneNumber, email, department);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -119,7 +119,7 @@ public class StaffDao implements CRUD<Staff> {
         return null;
     }
     public List<Staff> getSearch(String searchName){
-        String sql = "select * from nhanvien where name like concat('%',?,'%')";
+        String sql = "select * from nhanvien where tennv like concat('%',?,'%')";
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = Connect_MySQL.getConnect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -127,15 +127,14 @@ public class StaffDao implements CRUD<Staff> {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                Date date = resultSet.getDate("birth");
+                int id = resultSet.getInt("idnv");
+                String name = resultSet.getString("tennv");
+                Date date = resultSet.getDate("ngaysinh");
                 LocalDate birth = ((java.sql.Date) date).toLocalDate();
-                String address = resultSet.getString("address");
-                String phoneNumber = resultSet.getString("phone");
-                String email = resultSet.getString("mail");
-                Department department = departmentDao.findById(resultSet.getInt("phongban"));
-
+                String address = resultSet.getString("diachi");
+                String phoneNumber = resultSet.getString("sdt");
+                String email = resultSet.getString("email");
+                Department department = departmentDao.findById(resultSet.getInt("idpb"));
                 staffList.add(new Staff(id, name, birth, address,  phoneNumber,email, department));
             }
         } catch (SQLException throwables) {
